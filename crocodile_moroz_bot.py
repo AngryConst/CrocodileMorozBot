@@ -1,4 +1,6 @@
 import telebot
+import parse_tost
+import random
 
 token = open('security_token.txt', 'r', encoding="utf-8").read().rstrip()
 crocBot = telebot.TeleBot(token)
@@ -7,13 +9,15 @@ pictureGuessIdFile = open('./resources/picture_id_guess_place.txt', 'r+', encodi
 VIDEO_MESSAGE_ID = videoIdFile.read().rstrip()
 PICTURE_MESSAGE_ID = pictureGuessIdFile.read().rstrip()
 
+tosts = []
+
 @crocBot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
     crocBot.reply_to(message, """Привет, уважаемый крокодил. У нас есть команды, которые тебе понравятся. Выбирай.
     /поздравь /congratulate /present - поздравить всех крокодилов с Новым годом
     /tost' /тост /гивитост предложить новогодний тост""")
 
-@crocBot.message_handler(commands=['поздравь', 'congratulate', 'present'])
+@crocBot.message_handler(commands=['present', 'congratulate', 'поздравь'])
 def send_congrats(message):
     crocBot.reply_to(message, "Поздравляю с Новым годом!")
     global VIDEO_MESSAGE_ID, videoIdFile, PICTURE_MESSAGE_ID, pictureGuessIdFile
@@ -44,7 +48,13 @@ def send_congrats(message):
 
 @crocBot.message_handler(commands=['tost', 'тост', 'гивитост'])
 def send_congrats(message):
-    crocBot.reply_to(message, "Выпьем за всё хорошее!")
+    global tosts
+    if len(tosts) == 0:
+        tosts = parse_tost.getTosts()
+    print("Тостов осталось " + str( len(tosts) ))
+    randomTostId = random.randint(0, len(tosts)-1)
+    crocBot.reply_to(message, tosts[randomTostId])
+    del tosts[randomTostId]
 
 @crocBot.message_handler(func=lambda m: True)
 def echo_all(message):

@@ -49,8 +49,8 @@ def parseTosts():
 
       tosts.append( tost )
 
-    for line in tosts:
-      print(line)
+    #for line in tosts:
+      #print(line)
 
     if len(linkNext) > 0:
       urls.append(urls[0] + linkNext[0].split('/')[-1])
@@ -60,9 +60,20 @@ def parseTosts():
 
   return tosts
 
-def readTosts():
+def getTosts():
+  tosts = []
   pathName = "./resources/tosts.json"
-  tostsId = open(pathName, "w")
-  json.dump(parseTosts(), tostsId, ensure_ascii=False, indent=4)
+  with open(pathName, 'r', encoding='utf-8') as j:
+    try:
+      tosts = json.load(j)
+    except:
+      tosts = []
+  
+  #print( len(tosts) )
+  
+  if len(tosts) == 0:
+    tostsId = open(pathName, "w", encoding='utf-8')
+    tosts = parseTosts()
+    json.dump(tosts, tostsId, ensure_ascii=False, indent=4)
 
-readTosts()
+  return tosts
