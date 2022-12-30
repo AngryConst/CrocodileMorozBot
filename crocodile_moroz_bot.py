@@ -1,4 +1,5 @@
 import telebot
+from telebot import types
 import parse_tost
 import random
 
@@ -13,9 +14,14 @@ tosts = []
 
 @crocBot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
+    markup=types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item1=types.KeyboardButton("Гиви, тост!")
+    item2=types.KeyboardButton("Поздравь")
+    markup.add(item1)
+    markup.add(item2)
     crocBot.reply_to(message, """Привет, уважаемый крокодил. У нас есть команды, которые тебе понравятся. Выбирай.
     /поздравь /congratulate /present - поздравить всех крокодилов с Новым годом
-    /tost' /тост /гивитост предложить новогодний тост""")
+    /tost' /тост /гивитост предложить новогодний тост""", reply_markup=markup)
 
 @crocBot.message_handler(commands=['present', 'congratulate', 'поздравь'])
 def send_congrats(message):
@@ -47,7 +53,7 @@ def send_congrats(message):
 
 
 @crocBot.message_handler(commands=['tost', 'тост', 'гивитост'])
-def send_congrats(message):
+def send_tost(message):
     global tosts
     if len(tosts) == 0:
         tosts = parse_tost.getTosts()
@@ -58,7 +64,13 @@ def send_congrats(message):
 
 @crocBot.message_handler(func=lambda m: True)
 def echo_all(message):
-    crocBot.reply_to(message, message.text)
+    if message.text == "Гиви, тост!":
+        send_tost(message)
+
+    if message.text == "Поздравь":
+        send_congrats(message)
+
+    #crocBot.reply_to(message, message.text)
 
 crocBot.infinity_polling()
 #crocBot.polling(none_stop=False, interval=1)

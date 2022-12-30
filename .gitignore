@@ -1,2 +1,3 @@
 security_token.txt
 .venv
+__pycache__
