@@ -16,12 +16,10 @@ tosts = []
 def send_welcome(message):
     markup=types.ReplyKeyboardMarkup(resize_keyboard=True)
     item1=types.KeyboardButton("Гиви, тост!")
-    item2=types.KeyboardButton("Поздравь")
+    #item2=types.KeyboardButton("Поздравь")
     markup.add(item1)
-    markup.add(item2)
-    crocBot.reply_to(message, """Привет, уважаемый крокодил. У нас есть команды, которые тебе понравятся. Выбирай.
-    /поздравь /congratulate /present - поздравить всех крокодилов с Новым годом
-    /tost' /тост /гивитост предложить новогодний тост""", reply_markup=markup)
+    #markup.add(item2)
+    crocBot.reply_to(message, """Привет, уважаемый крокодил. Я знаю много тостов, просто нажми кнопку.""", reply_markup=markup)
 
 @crocBot.message_handler(commands=['present', 'congratulate', 'поздравь'])
 def send_congrats(message):
@@ -67,8 +65,8 @@ def echo_all(message):
     if message.text == "Гиви, тост!":
         send_tost(message)
 
-    if message.text == "Поздравь":
-        send_congrats(message)
+    #if message.text == "Поздравь":
+    #    send_congrats(message)
 
     #crocBot.reply_to(message, message.text)
 
