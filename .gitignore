@@ -1,3 +1,4 @@
 security_token.txt
 .venv
 __pycache__
+.vscode
